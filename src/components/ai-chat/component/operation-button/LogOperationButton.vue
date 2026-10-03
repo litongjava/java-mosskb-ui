@@ -27,7 +27,7 @@
       </el-tooltip>
       <el-divider direction="vertical" />
       <el-tooltip
-        v-if="buttonData.improve_paragraph_id_list.length === 0"
+        v-if="(buttonData?.improve_paragraph_id_list || []).length === 0"
         effect="dark"
         :content="$t('views.log.editContent')"
         placement="top"

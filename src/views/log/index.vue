@@ -543,7 +543,14 @@ const exportLog = () => {
       obj = { ...obj, abstract: search.value }
     }
 
-    logApi.exportChatLog(detail.value.id, detail.value.name, obj, { select_ids: arr }, loading)
+    // 导出文件名带日期，与后端 Content-Disposition 保持一致
+    logApi.exportChatLog(
+      detail.value.id,
+      `${detail.value.name}_${nowDate}`,
+      obj,
+      { select_ids: arr },
+      loading
+    )
   }
 }
 
