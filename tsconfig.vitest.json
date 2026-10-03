@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.app.json",
+  "exclude": [],
+  "compilerOptions": {
+    "composite": true,
+    "target": "esnext", // 使用ES最新语法
+    "module": "esnext", // 使用ES模块语法
+    "lib": ["ES2021", "DOM", "DOM.Iterable"],
+    "types": ["node", "jsdom"]
+  }
+}
