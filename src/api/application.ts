@@ -540,6 +540,59 @@ const importApplication: (data: any, loading?: Ref<boolean>) => Promise<Result<a
 ) => {
   return post(`${prefix}/import`, data, undefined, loading)
 }
+/**
+ * 分段预览
+ * @param application_id 应用 id
+ * @param document_id    文档 id
+ * @param paragraph_id   需要高亮定位的分段 id，可省略
+ */
+const getSegmentPreview: (
+  application_id: string,
+  document_id: string,
+  paragraph_id?: string,
+  loading?: Ref<boolean>
+) => Promise<Result<any>> = (application_id, document_id, paragraph_id, loading) => {
+  return get(
+    `${prefix}/${application_id}/document/${document_id}/preview`,
+    { paragraph_id },
+    loading
+  )
+}
+
+/**
+ * 文档全文预览
+ * @param application_id 应用 id
+ * @param document_id    文档 id
+ */
+const getDocumentPreviewContent: (
+  application_id: string,
+  document_id: string,
+  loading?: Ref<boolean>
+) => Promise<Result<any>> = (application_id, document_id, loading) => {
+  return get(`${prefix}/${application_id}/document/${document_id}/preview_content`, {}, loading)
+}
+
+/**
+ * 文档原文件
+ * @param application_id 应用 id
+ * @param document_id    文档 id
+ * @param asAttachment   true 时按附件下载，false/省略时用于在线预览
+ */
+const getDocumentFile: (
+  application_id: string,
+  document_id: string,
+  asAttachment?: boolean,
+  loading?: Ref<boolean>
+) => Promise<any> = (application_id, document_id, asAttachment, loading) => {
+  return download(
+    `${prefix}/${application_id}/document/${document_id}/file`,
+    'get',
+    undefined,
+    { download: asAttachment ? 'true' : 'false' },
+    loading
+  )
+}
+
 export default {
   getAllAppilcation,
   getApplication,
@@ -585,5 +638,8 @@ export default {
   exportApplication,
   importApplication,
   getApplicationById,
-  getMcpTools
+  getMcpTools,
+  getSegmentPreview,
+  getDocumentPreviewContent,
+  getDocumentFile
 }

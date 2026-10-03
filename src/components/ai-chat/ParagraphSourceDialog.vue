@@ -22,7 +22,12 @@
             <el-form-item :label="$t('chat.KnowledgeSource.referenceParagraph')">
               <div v-if="detail.paragraph_list.length > 0" class="w-full">
                 <template v-for="(item, index) in detail.paragraph_list" :key="index">
-                  <ParagraphCard :data="item" :content="item.content" :index="index" />
+                  <ParagraphCard
+                    :data="item"
+                    :content="item.content"
+                    :index="index"
+                    :application-id="props.applicationId"
+                  />
                 </template>
               </div>
               <span v-else> - </span>
@@ -39,6 +44,13 @@ import { cloneDeep } from 'lodash'
 import { arraySort } from '@/utils/utils'
 import ParagraphCard from './component/ParagraphCard.vue'
 const emit = defineEmits(['refresh'])
+
+const props = defineProps({
+  applicationId: {
+    type: String,
+    default: ''
+  }
+})
 
 const dialogVisible = ref(false)
 const detail = ref<any>({})

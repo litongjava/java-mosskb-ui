@@ -88,6 +88,30 @@ export default {
     consume: '消耗tokens',
     consumeTime: '耗时'
   },
+  segmentPreview: {
+    title: '分段预览',
+    clickTip: '点击预览分段',
+    segmentCount: '分段',
+    hit: '命中分段',
+    disabled: '已停用',
+    untitled: '未命名分段',
+    chars: '字',
+    loadMore: '加载更多分段',
+    empty: '该文档暂无可预览的分段',
+    truncated: '文档内容较大，仅展示部分分段'
+  },
+  documentPreview: {
+    title: '文档预览',
+    clickTip: '点击预览文档全文',
+    previewFullText: '预览全文',
+    download: '下载文档',
+    truncated: '文档内容较大，仅展示部分内容，可下载原文件查看',
+    unsupported: '该文件类型暂不支持在线预览，请下载后查看',
+    loadFailed: '原文件加载失败',
+    message: {
+      unsupported: '该文件类型暂不支持在线预览，请下载后查看'
+    }
+  },
   paragraphSource: {
     title: '知识库引用',
     question: '用户问题',

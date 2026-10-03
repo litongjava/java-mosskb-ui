@@ -25,7 +25,15 @@ router.beforeEach(
       return
     }
     const { user } = useStore()
-    const notAuthRouteNameList = ['register', 'login', 'forgot_password', 'reset_password', 'Chat']
+    // 文档预览页由对话页新开标签页打开，它的两个接口本身不要求登录，不能按登录用户拦。
+    const notAuthRouteNameList = [
+      'register',
+      'login',
+      'forgot_password',
+      'reset_password',
+      'Chat',
+      'DocumentPreview'
+    ]
 
     if (!notAuthRouteNameList.includes(to.name ? to.name.toString() : '')) {
       if (to.query && to.query.token) {

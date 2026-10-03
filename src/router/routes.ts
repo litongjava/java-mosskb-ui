@@ -26,6 +26,14 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/chat/index.vue')
   },
 
+  // 文档预览：从对话来源、知识库引用或分段预览里新开标签页打开，独立成页而不是弹窗
+  {
+    path: '/document-preview/:applicationId/:documentId',
+    name: 'DocumentPreview',
+    meta: { title: 'chat.documentPreview.title' },
+    component: () => import('@/views/document-preview/index.vue')
+  },
+
   {
     path: '/login',
     name: 'login',

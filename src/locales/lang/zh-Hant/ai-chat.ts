@@ -88,6 +88,30 @@ export default {
     consume: '消耗tokens',
     consumeTime: '耗時'
   },
+  segmentPreview: {
+    title: '分段預覽',
+    clickTip: '點擊預覽分段',
+    segmentCount: '分段',
+    hit: '命中分段',
+    disabled: '已停用',
+    untitled: '未命名分段',
+    chars: '字',
+    loadMore: '載入更多分段',
+    empty: '該文檔暫無可預覽的分段',
+    truncated: '文檔內容較大，僅展示部分分段'
+  },
+  documentPreview: {
+    title: '文檔預覽',
+    clickTip: '點擊預覽文檔全文',
+    previewFullText: '預覽全文',
+    download: '下載文檔',
+    truncated: '文檔內容較大，僅展示部分內容，可下載原檔案查看',
+    unsupported: '該檔案類型暫不支援線上預覽，請下載後查看',
+    loadFailed: '原檔案載入失敗',
+    message: {
+      unsupported: '該檔案類型暫不支援線上預覽，請下載後查看'
+    }
+  },
   paragraphSource: {
     title: '知識庫引用',
     question: '用戶問題',

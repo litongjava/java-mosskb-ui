@@ -45,6 +45,7 @@
           <KnowledgeSource
             :data="chatRecord"
             :type="application.type"
+            :application="application"
             v-if="showSource(chatRecord) && index === chatRecord.answer_text_list.length - 1"
           />
         </el-card>

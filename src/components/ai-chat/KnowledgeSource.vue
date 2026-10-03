@@ -13,7 +13,13 @@
       <el-row :gutter="8" v-if="uniqueParagraphList?.length">
         <template v-for="(item, index) in uniqueParagraphList" :key="index">
           <el-col :span="12" class="mb-8">
-            <el-card shadow="never" class="file-List-card" data-width="40">
+            <el-card
+              shadow="never"
+              class="file-List-card cursor"
+              data-width="40"
+              :title="$t('chat.segmentPreview.clickTip')"
+              @click="openSegmentPreview(item)"
+            >
               <div class="flex-between">
                 <div class="flex">
                   <img :src="getImgUrl(item && item?.document_name)" alt="" width="20" />
@@ -26,6 +32,7 @@
                       target="_blank"
                       class="ellipsis"
                       :title="item?.document_name?.trim()"
+                      @click.stop
                     >
                       <span :title="item?.document_name?.trim()">{{ item?.document_name }}</span>
                     </a>
@@ -62,7 +69,9 @@
       >
     </div>
     <!-- 知识库引用 dialog -->
-    <ParagraphSourceDialog ref="ParagraphSourceDialogRef" />
+    <ParagraphSourceDialog ref="ParagraphSourceDialogRef" :application-id="application?.id" />
+    <!-- 分段预览 dialog -->
+    <SegmentPreviewDialog ref="SegmentPreviewDialogRef" />
     <!-- 执行详情 dialog -->
     <ExecutionDetailDialog ref="ExecutionDetailDialogRef" />
   </div>
@@ -70,6 +79,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import ParagraphSourceDialog from './ParagraphSourceDialog.vue'
+import SegmentPreviewDialog from './SegmentPreviewDialog.vue'
 import ExecutionDetailDialog from './ExecutionDetailDialog.vue'
 import { isWorkFlow } from '@/utils/application'
 import { getImgUrl, getNormalizedUrl } from '@/utils/utils'
@@ -81,13 +91,25 @@ const props = defineProps({
   type: {
     type: String,
     default: ''
+  },
+  application: {
+    type: Object,
+    default: () => ({})
   }
 })
 
 const ParagraphSourceDialogRef = ref()
+const SegmentPreviewDialogRef = ref()
 const ExecutionDetailDialogRef = ref()
 function openParagraph(row: any, id?: string) {
   ParagraphSourceDialogRef.value.open(row, id)
+}
+function openSegmentPreview(row: any) {
+  const applicationId = props.application?.id
+  if (!applicationId || !row?.document_id) {
+    return
+  }
+  SegmentPreviewDialogRef.value.open(applicationId, row.document_id, row.id)
 }
 function openExecutionDetail(row: any) {
   ExecutionDetailDialogRef.value.open(row)

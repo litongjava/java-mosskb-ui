@@ -141,7 +141,7 @@
               <template #footer>
                 <div class="footer-content flex-between">
                   <div>
-                    <span v-if="item.template_id"> {{ $t('common.author') }}: MaxKB</span>
+                    <span v-if="item.template_id"> {{ $t('common.author') }}: MossKB</span>
                   </div>
                   <div @click.stop>
                     <el-switch
@@ -249,7 +249,7 @@
               <div class="status-button"></div>
               <template #footer>
                 <div class="footer-content flex-between">
-                  <div>{{ $t('common.author') }}: MaxKB</div>
+                  <div>{{ $t('common.author') }}: MossKB</div>
                   <div @click.stop>
                     <el-button type="primary" link @click="addInternalFunction(item)">
                       {{ $t('common.add') }}

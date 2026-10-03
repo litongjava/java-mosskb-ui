@@ -31,7 +31,11 @@
             </a>
           </template>
           <template v-else>
-            <span class="ellipsis-1 break-all" :title="data?.document_name?.trim()">
+            <span
+              class="paragraph-source-document-name cursor ellipsis-1 break-all"
+              :title="data?.document_name?.trim()"
+              @click="openDocumentPreview"
+            >
               {{ data?.document_name?.trim() }}
             </span>
           </template>
@@ -51,6 +55,7 @@
 </template>
 <script setup lang="ts">
 import { getImgUrl, getNormalizedUrl } from '@/utils/utils'
+import { openDocumentPreviewTab } from '@/utils/document'
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -69,8 +74,17 @@ const props = defineProps({
   score: {
     type: Number,
     default: null
+  },
+  applicationId: {
+    type: String,
+    default: ''
   }
 })
+
+/** 点击文档名称在新标签页打开文档预览页。 */
+function openDocumentPreview() {
+  openDocumentPreviewTab(props.applicationId, props.data?.document_id)
+}
 const isMetaObject = computed(() => typeof props.data.meta === 'object')
 const parsedMeta = computed(() => {
   try {
@@ -88,6 +102,12 @@ const meta = computed(() => (isMetaObject.value ? props.data.meta : parsedMeta.v
     .item {
       max-width: 50%;
     }
+  }
+}
+
+.paragraph-source-document-name {
+  &:hover {
+    color: var(--el-color-primary);
   }
 }
 

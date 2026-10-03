@@ -36,7 +36,7 @@ export const defaultSetting = {
   icon: '',
   loginLogo: '',
   loginImage: '',
-  title: 'MaxKB',
+  title: 'MossKB',
   slogan: t('views.system.theme.defaultSlogan')
 }
 

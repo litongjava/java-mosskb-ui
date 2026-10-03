@@ -90,6 +90,30 @@ export default {
     consume: 'Tokens',
     consumeTime: 'Runtime'
   },
+  segmentPreview: {
+    title: 'Segment Preview',
+    clickTip: 'Click to preview the segments',
+    segmentCount: 'Segments',
+    hit: 'Cited',
+    disabled: 'Disabled',
+    untitled: 'Untitled segment',
+    chars: 'chars',
+    loadMore: 'Load more segments',
+    empty: 'No segment to preview in this document',
+    truncated: 'The document is large, only part of the segments are shown'
+  },
+  documentPreview: {
+    title: 'Document Preview',
+    clickTip: 'Click to preview the full text',
+    previewFullText: 'Full text',
+    download: 'Download',
+    truncated: 'The document is large, only part of it is shown. Download the original file to read it all.',
+    unsupported: 'This file type cannot be previewed online, please download it instead',
+    loadFailed: 'Failed to load the original file',
+    message: {
+      unsupported: 'This file type cannot be previewed online, please download it instead'
+    }
+  },
   paragraphSource: {
     title: 'Knowledge Quote',
     question: 'User Question',
