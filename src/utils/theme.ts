@@ -46,7 +46,7 @@ export const defaultPlatformSetting = {
   showForum: true,
   forumUrl: t('layout.forumUrl'),
   showProject: true,
-  projectUrl: 'https://github.com/1Panel-dev/MaxKB'
+  projectUrl: 'https://github.com/litongjava/java-mosskb'
 }
 
 export function hexToRgba(hex?: string, alpha?: number) {

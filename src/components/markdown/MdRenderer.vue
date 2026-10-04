@@ -34,7 +34,7 @@
         editorId="preview-only"
         :modelValue="item.content"
         :key="index"
-        class="maxkb-md"
+        class="mosskb-md"
       />
     </template>
   </div>

@@ -12,7 +12,7 @@ const langModuleMap = new Map<string, Object>()
 
 export const langCode: Array<string> = []
 
-export const localeConfigKey = 'MaxKB-locale'
+export const localeConfigKey = 'MossKB-locale'
 
 // 获取浏览器默认语言环境
 const languages = usePreferredLanguages()

@@ -37,7 +37,7 @@ const damo_data: Array<FormField> = [
     ]
   },
   {
-    field: 'maxkb_tokens',
+    field: 'mosskb_tokens',
     input_type: 'Slider',
     default_value: 1,
     attrs: {

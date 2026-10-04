@@ -30,5 +30,5 @@ export default {
   },
   copyright: '版權所有 © 2014-2025 杭州飛致雲信息科技有限公司',
   userManualUrl:'https://maxkb.cn/docs/',
-  forumUrl: 'https://github.com/1Panel-dev/MaxKB/discussions'
+  forumUrl: 'https://github.com/litongjava/java-mosskb/discussions'
 }

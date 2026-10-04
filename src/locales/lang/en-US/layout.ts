@@ -30,5 +30,5 @@ export default {
   },
   copyright: 'Copyright © 2014-2025 FIT2CLOUD, All rights reserved.',
   userManualUrl: 'http://docs.maxkb.hk/',
-  forumUrl: 'https://github.com/1Panel-dev/MaxKB/discussions'
+  forumUrl: 'https://github.com/litongjava/java-mosskb/discussions'
 }

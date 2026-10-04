@@ -26,6 +26,11 @@ export default defineConfig(({ mode }) => {
     changeOrigin: true,
     rewrite: (path) => path.replace(ENV.VITE_BASE_PATH, '/')
   }
+  // 后端静态资源目录：知识库原文件按「目录名 + 相对路径」访问
+  proxyConf['/pages'] = {
+    target: ENV.VITE_PROXY_TARGET || 'http://127.0.0.1:10060',
+    changeOrigin: true
+  }
   return {
     preflight: false,
     lintOnSave: false,

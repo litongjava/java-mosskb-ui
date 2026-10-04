@@ -94,7 +94,7 @@
               :description="item.desc"
               class="function-lib-card"
               @click="openCreateDialog(item)"
-              :class="item.permission_type === 'PUBLIC' && !canEdit(item) ? '' : 'cursor'"
+              :class="canEdit(item) ? 'cursor' : ''"
             >
               <template #icon>
                 <AppAvatar
@@ -159,54 +159,50 @@
                       <template #dropdown>
                         <el-dropdown-menu>
                           <el-dropdown-item
-                            v-if="item.template_id"
-                            :disabled="item.permission_type === 'PUBLIC' && !canEdit(item)"
-                            @click.stop="addInternalFunction(item, true)"
-                          >
-                            <el-icon><EditPen /></el-icon>
-                            {{ $t('common.edit') }}
-                          </el-dropdown-item>
-                          <el-dropdown-item
-                            v-if="!item.template_id"
-                            :disabled="item.permission_type === 'PUBLIC' && !canEdit(item)"
-                            @click.stop="openCreateDialog(item)"
-                          >
-                            <el-icon><EditPen /></el-icon>
-                            {{ $t('common.edit') }}
-                          </el-dropdown-item>
-                          <el-dropdown-item
-                            :disabled="item.permission_type === 'PUBLIC' && !canEdit(item)"
-                            v-if="!item.template_id"
+                            v-if="!canEdit(item)"
                             @click.stop="copyFunctionLib(item)"
                           >
                             <AppIcon iconName="app-copy"></AppIcon>
                             {{ $t('common.copy') }}
                           </el-dropdown-item>
                           <el-dropdown-item
-                            v-if="item.init_field_list?.length > 0"
-                            :disabled="item.permission_type === 'PUBLIC' && !canEdit(item)"
+                            v-if="canEdit(item) && item.template_id"
+                            @click.stop="addInternalFunction(item, true)"
+                          >
+                            <el-icon><EditPen /></el-icon>
+                            {{ $t('common.edit') }}
+                          </el-dropdown-item>
+                          <el-dropdown-item
+                            v-if="canEdit(item) && !item.template_id"
+                            @click.stop="openCreateDialog(item)"
+                          >
+                            <el-icon><EditPen /></el-icon>
+                            {{ $t('common.edit') }}
+                          </el-dropdown-item>
+                          <el-dropdown-item
+                            v-if="canEdit(item) && !item.template_id"
+                            @click.stop="copyFunctionLib(item)"
+                          >
+                            <AppIcon iconName="app-copy"></AppIcon>
+                            {{ $t('common.copy') }}
+                          </el-dropdown-item>
+                          <el-dropdown-item
+                            v-if="canEdit(item) && item.init_field_list?.length > 0"
                             @click.stop="configInitParams(item)"
                           >
                             <AppIcon iconName="app-operation" class="mr-4"></AppIcon>
                             {{ $t('common.param.initParam') }}
                           </el-dropdown-item>
-                          <el-dropdown-item
-                            :disabled="item.permission_type === 'PUBLIC' && !canEdit(item)"
-                            @click.stop="configPermission(item)"
-                          >
+                          <el-dropdown-item v-if="canEdit(item)" @click.stop="configPermission(item)">
                             <el-icon><User /></el-icon>
                             {{ $t('views.functionLib.functionForm.form.permission_type.label') }}
                           </el-dropdown-item>
-                          <el-dropdown-item
-                            :disabled="item.permission_type === 'PUBLIC' && !canEdit(item)"
-                            v-if="!item.template_id"
-                            @click.stop="exportFunctionLib(item)"
-                          >
+                          <el-dropdown-item v-if="canEdit(item)" @click.stop="exportFunctionLib(item)">
                             <AppIcon iconName="app-export"></AppIcon>
                             {{ $t('common.export') }}
                           </el-dropdown-item>
                           <el-dropdown-item
-                            :disabled="item.permission_type === 'PUBLIC' && !canEdit(item)"
+                            v-if="canEdit(item)"
                             @click.stop="deleteFunctionLib(item)"
                           >
                             <el-icon><Delete /></el-icon>
@@ -225,7 +221,6 @@
               :description="item.desc"
               class="function-lib-card"
               @click="openDescDrawer(item)"
-              :class="item.permission_type === 'PUBLIC' && !canEdit(item) ? '' : 'cursor'"
             >
               <template #icon>
                 <AppAvatar
@@ -343,19 +338,20 @@ const canEdit = (row: any) => {
   return user.userInfo?.id === row?.user_id
 }
 
+// 别人的公开函数只读：点卡片不打开编辑抽屉，菜单里只留复制
 function openCreateDialog(data?: any) {
   // 有template_id的不允许编辑，是模板转换来的
   if (data?.template_id) {
     return
   }
-  // console.log(data)
+  if (data && !canEdit(data)) {
+    return
+  }
   title.value = data ? t('views.functionLib.editFunction') : t('views.functionLib.createFunction')
   if (data) {
-    if (data?.permission_type !== 'PUBLIC' || canEdit(data)) {
-      functionLibApi.getFunctionLibById(data?.id, changeStateloading).then((res) => {
-        FunctionFormDrawerRef.value.open(res.data)
-      })
-    }
+    functionLibApi.getFunctionLibById(data?.id, changeStateloading).then((res) => {
+      FunctionFormDrawerRef.value.open(res.data)
+    })
   } else {
     FunctionFormDrawerRef.value.open(data)
   }
@@ -502,7 +498,7 @@ function importFunctionLib(file: any) {
           cancelButtonText: t('common.confirm'),
           confirmButtonText: t('common.professional')
         }).then(() => {
-          window.open('https://maxkb.cn/pricing.html', '_blank')
+          window.open('https://bytemoss.cn/contact.html', '_blank')
         })
       }
     })

@@ -36,7 +36,7 @@ const useUserStore = defineStore({
   actions: {
     getLanguage() {
       return this.userType === 1
-        ? localStorage.getItem('MaxKB-locale') || getBrowserLang()
+        ? localStorage.getItem('MossKB-locale') || getBrowserLang()
         : sessionStorage.getItem('language') || getBrowserLang()
     },
     showXpack() {
@@ -122,7 +122,7 @@ const useUserStore = defineStore({
     async theme(loading?: Ref<boolean>) {
       return await ThemeApi.getThemeInfo(loading).then((ok) => {
         this.setTheme(ok.data)
-        // window.document.title = this.themeInfo['title'] || 'MaxKB'
+        // window.document.title = this.themeInfo['title'] || 'MossKB'
         // const link = document.querySelector('link[rel="icon"]') as any
         // if (link) {
         //   link['href'] = this.themeInfo['icon'] || '/favicon.ico'
