@@ -34,12 +34,7 @@
                 >
                   <template #default="{ row }">
                     <div class="flex align-center">
-                      <span
-                        :innerHTML="row.icon"
-                        alt=""
-                        style="height: 20px; width: 20px"
-                        class="mr-8"
-                      />
+                      <span :innerHTML="row.icon" alt="" class="provider-icon"></span>
                       <span>{{ row.name }}</span>
                     </div>
                   </template>
@@ -60,12 +55,7 @@
                 >
                   <template #default="{ row }">
                     <div class="flex align-center">
-                      <span
-                        :innerHTML="row.icon"
-                        alt=""
-                        style="height: 20px; width: 20px"
-                        class="mr-8"
-                      />
+                      <span :innerHTML="row.icon" alt="" class="provider-icon"></span>
                       <span>{{ row.name }}</span>
                     </div>
                   </template>
@@ -324,6 +314,26 @@ onMounted(() => {
   .model-list-height-left {
     height: calc(var(--create-dataset-height) - 40px);
   }
+  // 平台图标：供应商 SVG 自带 32×32 的 width/height，必须把容器和内部尺寸一起定死，
+  // 否则 SVG 会按自身 intrinsic 尺寸溢出容器、压到平台名字上。
+  .provider-icon {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+    margin-right: 6px;
+
+    // v-html 注入的 SVG 不会被加上 scoped 属性，必须用 :deep 才选得中。
+    :deep(svg) {
+      // 用 inline-block 而不是 flex：SVG 作为 flex 子项会被 align-items 拉伸，
+      // height:100% 也解析不出来，结果 svg 会撑到自身 32px 高度再被裁掉。
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
   .all-mode {
     padding: 10px 16px;
   }
@@ -351,7 +361,8 @@ onMounted(() => {
     }
     :deep(.common-list) {
       li {
-        padding-left: 30px !important;
+        // 从 30px 收到 22px：图标左移并和「公有模型 / 私有模型」标题的层级更贴近。
+        padding-left: 22px !important;
       }
     }
     :deep(.el-collapse-item__wrap) {

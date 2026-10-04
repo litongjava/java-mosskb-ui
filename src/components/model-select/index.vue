@@ -149,8 +149,27 @@ onMounted(() => {
     }
   }
 
+  // 平台图标：供应商 SVG 自带 width/height，必须同时锁死容器与内部尺寸，
+  // 否则图标会按自身 intrinsic 尺寸撑破行高并与模型名重叠。
   .model-icon {
+    flex: 0 0 18px;
     width: 18px;
+    height: 18px;
+    // 选项行是 align-items:center 的 flex 容器。子项默认 align-self:auto，会先按
+    // stretch 解析并被顶到行首；必须显式 align-self:center，图标才和文字同一水平线。
+    display: inline-flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    // v-html 注入的 SVG 不会被加上 scoped 属性，必须用 :deep 才选得中。
+    // 同时用 !important 压掉 SVG 自身的 width/height 属性，避免内部尺寸把容器撑大。
+    :deep(svg) {
+      width: 18px !important;
+      height: 18px !important;
+      display: block;
+    }
   }
 
   .check-icon {
