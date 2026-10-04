@@ -5,6 +5,7 @@ export default {
   copyApplication: '复制应用',
   workflow: '高级编排',
   simple: '简单配置',
+  department: '部门机构',
   searchBar: {
     placeholder: '按名称搜索'
   },
@@ -39,7 +40,8 @@ export default {
       appType: {
         label: '类型',
         simplePlaceholder: '适合新手创建小助手',
-        workflowPlaceholder: '适合高级用户自定义小助手的工作流'
+        workflowPlaceholder: '适合高级用户自定义小助手的工作流',
+        departmentPlaceholder: '适合特定的知识领域场景'
       },
       appTemplate: {
         blankApp: '空白应用',

@@ -64,8 +64,10 @@
                   :class="isWorkFlow(applicationForm.type) ? 'active' : ''"
               >
                 <el-radio value="DEPARTMENT" size="large">
-                  <p class="mb-4">部门机构</p>
-                  <el-text type="info">适合特定的知识领域场景</el-text>
+                  <p class="mb-4">{{ $t('views.application.department') }}</p>
+                  <el-text type="info">{{
+                    $t('views.application.applicationForm.form.appType.departmentPlaceholder')
+                  }}</el-text>
                 </el-radio>
               </el-card>
             </el-col>

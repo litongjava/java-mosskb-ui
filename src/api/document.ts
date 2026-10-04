@@ -8,10 +8,48 @@ const prefix = '/dataset'
 
 /**
  * 分段预览（上传文档）
+ *
+ * 后端只负责保存文件并建解析任务，立即返回 { task_id_list }；分段结果由本方法内部轮询
+ * /dataset/document/split/task/{taskId} 取得，调用方拿到的仍然是分段列表。
+ *
  * @param 参数  file:file,limit:number,patterns:array,with_filter:boolean
  */
-const postSplitDocument: (data: any) => Promise<Result<any>> = (data) => {
-  return post(`${prefix}/document/split`, data, undefined, undefined, 1000 * 60 * 60)
+const postSplitDocument: (data: any) => Promise<Result<any>> = async (data) => {
+  const started: any = await post(
+    `${prefix}/document/split`,
+    data,
+    undefined,
+    undefined,
+    1000 * 60 * 10
+  )
+  const taskIdList: Array<string> = started?.data?.task_id_list || []
+  if (!taskIdList.length) {
+    return started
+  }
+  const lists = await Promise.all(taskIdList.map((taskId) => pollSplitTask(taskId)))
+  return { ...started, data: lists.flat() } as Result<any>
+}
+
+/** 解析一份大文档要几分钟，所以按 2 秒间隔轮询任务状态，最多等待 60 分钟。 */
+const pollSplitTask: (taskId: string) => Promise<Array<any>> = async (taskId) => {
+  const deadline = Date.now() + 1000 * 60 * 60
+  for (;;) {
+    try {
+      const res: any = await get(`${prefix}/document/split/task/${taskId}`, {}, undefined, {
+        silent: true
+      })
+      if (Array.isArray(res?.data)) {
+        return res.data
+      }
+    } catch (error: any) {
+      // 后端返回的失败原因需要提示用户，但统一拦截器已经弹过一次，这里不再重复。
+      throw new Error(error?.message || '文档解析失败')
+    }
+    if (Date.now() > deadline) {
+      throw new Error('文档解析超时，请稍后在文档列表查看解析结果')
+    }
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+  }
 }
 
 /**

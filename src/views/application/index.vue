@@ -108,7 +108,9 @@
                 <el-tag type="warning" v-if="isWorkFlow(item.type)" style="height: 22px">
                   {{ $t('views.application.workflow') }}
                 </el-tag>
-                <el-tag type="warning" v-else-if="isDepartment(item.type)">部门机构</el-tag><el-tag class="blue-tag" v-else style="height: 22px">
+                <el-tag type="warning" v-else-if="isDepartment(item.type)" style="height: 22px">
+                  {{ $t('views.application.department') }}
+                </el-tag><el-tag class="blue-tag" v-else style="height: 22px">
                   {{ $t('views.application.simple') }}
                 </el-tag>
               </div>

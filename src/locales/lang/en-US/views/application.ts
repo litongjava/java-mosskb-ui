@@ -5,6 +5,7 @@ export default {
   copyApplication: 'Copy APP',
   workflow: 'WORKFLOW',
   simple: 'SIMPLE',
+  department: 'DEPARTMENT',
   searchBar: {
     placeholder: 'Search by name'
   },
@@ -44,7 +45,9 @@ export default {
       appType: {
         label: 'Type',
         simplePlaceholder: 'Suitable for beginners to create assistant.',
-        workflowPlaceholder: 'Suitable for advanced users to customize the workflow of assistant'
+        workflowPlaceholder:
+          'Suitable for advanced users to customize the workflow of assistant',
+        departmentPlaceholder: 'Suitable for specific knowledge domain scenarios'
       },
       appTemplate: {
         blankApp: 'Blank APP',

@@ -19,6 +19,13 @@ const axiosConfig = {
 
 const instance = axios.create(axiosConfig)
 
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    /** 轮询类请求置为 true，失败时不弹统一错误提示，由调用方决定是否提示。 */
+    silent?: boolean
+  }
+}
+
 /* 设置请求拦截器 */
 instance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -49,7 +56,8 @@ instance.interceptors.response.use(
         }
         if (
           !response.config.url.includes('/valid') &&
-          !response.config.url.includes('/function_lib/debug')
+          !response.config.url.includes('/function_lib/debug') &&
+          !response.config.silent
         ) {
           MsgError(response.data.message)
           return Promise.reject(response.data)
@@ -126,20 +134,30 @@ const promise: (
  * @param url    资源url
  * @param params 参数
  * @param loading loading
+ * @param options 覆盖 axios 配置，例如 silent 关闭统一错误提示
  * @returns 异步promise对象
  */
 export const get: (
   url: string,
   params?: unknown,
   loading?: NProgress | Ref<boolean>,
-  timeout?: number
+  options?: { timeout?: number; silent?: boolean }
 ) => Promise<Result<any>> = (
   url: string,
   params: unknown,
   loading?: NProgress | Ref<boolean>,
-  timeout?: number
+  options?: { timeout?: number; silent?: boolean }
 ) => {
-  return promise(request({ url: url, method: 'get', params, timeout: timeout }), loading)
+  return promise(
+    request({
+      url: url,
+      method: 'get',
+      params,
+      timeout: options?.timeout,
+      silent: options?.silent
+    } as InternalAxiosRequestConfig),
+    loading
+  )
 }
 
 /**
@@ -182,7 +200,8 @@ export const put: (
  * 删除
  * @param url     删除url
  * @param params  params参数
- * @param loading 进度条
+ * @param data     请求体
+ * @param loading  进度条
  * @returns
  */
 export const del: (
@@ -309,7 +328,7 @@ export const exportExcelPost: (
       link.href = window.URL.createObjectURL(blob)
       link.download = fileName
       link.click()
-      // 释放内存
+      //释放内存
       window.URL.revokeObjectURL(link.href)
     }
     return true
@@ -322,13 +341,7 @@ export const download: (
   data?: any,
   params?: any,
   loading?: NProgress | Ref<boolean>
-) => Promise<any> = (
-  url: string,
-  method: string,
-  data?: any,
-  params?: any,
-  loading?: NProgress | Ref<boolean>
-) => {
+) => Promise<any> = (url, method, data, params, loading) => {
   return promise(request({ url: url, method: method, data, params, responseType: 'blob' }), loading)
 }
 
