@@ -83,9 +83,9 @@ interface CheckCodeRequest {
 
 interface ResetCurrentUserPasswordRequest {
   /**
-   * 验证码
+   * 验证码（Java 后端改密只认登录令牌，不再要求邮箱验证码）
    */
-  code: string
+  code?: string
   /**
    *密码
    */
