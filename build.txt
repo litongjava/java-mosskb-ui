@@ -1,0 +1,11 @@
+[win.build]
+pnpm install
+pnpm build
+
+[macos.build]
+pnpm install
+pnpm build
+
+[linux.build]
+pnpm install
+pnpm build
