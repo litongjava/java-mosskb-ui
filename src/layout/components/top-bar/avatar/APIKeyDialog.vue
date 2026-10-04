@@ -73,6 +73,7 @@ import { copyClick } from '@/utils/clipboard'
 import systemKeyApi from '@/api/system-api-key'
 import { datetimeFormat } from '@/utils/time'
 import { MsgSuccess, MsgConfirm } from '@/utils/message'
+import { serverUrl } from '@/utils/server'
 import { t } from '@/locales'
 import SettingAPIKeyDialog from '@/views/application-overview/component/SettingAPIKeyDialog.vue'
 
@@ -89,7 +90,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['addData'])
 
-const apiUrl = window.location.origin + '/doc/'
+const apiUrl = serverUrl('/doc/')
 const SettingAPIKeyDialogRef = ref()
 const dialogVisible = ref<boolean>(false)
 const loading = ref(false)

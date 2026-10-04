@@ -152,6 +152,13 @@ venv/
 Debug/
 vcpkg_installed/
 .env
+# 前端环境文件（vite 从 env/ 目录读取）：
+# env/.env 是所有环境共用的默认值（VITE_APP_TITLE、VITE_BASE_PATH 等），必须提交，
+# 否则新克隆的仓库 %VITE_APP_TITLE% 取不到、资源前缀也会退回 '/'。
+!env/.env
+# 本机覆盖不提交
+env/.env.local
+env/.env.*.local
 .next/
 app.zip
 secrets.txt

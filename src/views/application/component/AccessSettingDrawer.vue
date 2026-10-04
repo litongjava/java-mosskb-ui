@@ -105,6 +105,7 @@ import applicationApi from '@/api/application'
 import { useRoute } from 'vue-router'
 import { MsgError, MsgSuccess } from '@/utils/message'
 import { copyClick } from '@/utils/clipboard'
+import { absoluteApiUrl } from '@/utils/server'
 import { t } from '@/locales'
 
 type PlatformType = 'wechat' | 'dingtalk' | 'wecom' | 'feishu' | 'slack'
@@ -392,7 +393,7 @@ const open = async (id: string, type: PlatformType) => {
     MsgError(t('views.application.tip.loadingErrorMessage'))
   } finally {
     loading.value = false
-    form[configType.value].callback_url = `${window.location.origin}/api/${type}/${id}`
+    form[configType.value].callback_url = absoluteApiUrl(`/${type}/${id}`)
   }
 }
 

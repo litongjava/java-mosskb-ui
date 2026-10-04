@@ -4,6 +4,7 @@ import type { pageRequest } from '@/api/type/common'
 import type { ApplicationFormType } from '@/api/type/application'
 import { type Ref } from 'vue'
 import type { FormField } from '@/components/dynamics-form/type'
+import { API_BASE_URL } from '@/utils/server'
 
 const prefix = '/application'
 
@@ -187,8 +188,7 @@ const getChatOpen: (application_id: String) => Promise<Result<any>> = (applicati
  * data
  */
 const postChatMessage: (chat_id: string, data: any) => Promise<any> = (chat_id, data) => {
-  const server=import.meta.env.VITE_API_BASE_URL || '/api';
-  return postStream(`${server}${prefix}/chat_message/${chat_id}`, data)
+  return postStream(`${API_BASE_URL}${prefix}/chat_message/${chat_id}`, data)
 }
 
 /**

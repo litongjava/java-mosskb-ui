@@ -9,7 +9,8 @@ const envDir = './env'
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const ENV = loadEnv(mode, envDir)
-  const prefix = process.env.VITE_DYNAMIC_PREFIX || ENV.VITE_BASE_PATH
+  // 部署路径：命令行环境变量 > env 文件里的 VITE_DYNAMIC_PREFIX > VITE_BASE_PATH
+  const prefix = process.env.VITE_DYNAMIC_PREFIX || ENV.VITE_DYNAMIC_PREFIX || ENV.VITE_BASE_PATH
   const proxyConf: Record<string, string | ProxyOptions> = {}
   proxyConf['/api'] = {
     target: ENV.VITE_PROXY_TARGET || 'http://127.0.0.1:10060',

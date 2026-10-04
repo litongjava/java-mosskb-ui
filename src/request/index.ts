@@ -7,9 +7,11 @@ import useStore from '@/stores'
 import router from '@/router'
 
 import { ref, type WritableComputedRef } from 'vue'
+import { API_BASE_URL, wsUrl } from '@/utils/server'
 
 const axiosConfig = {
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  // 后端地址来自环境变量，见 src/utils/server.ts
+  baseURL: API_BASE_URL,
   withCredentials: false,
   timeout: 600000,
   headers: {}
@@ -336,14 +338,6 @@ export const download: (
  * @returns  返回一个websocket实例
  */
 export const socket = (url: string) => {
-  let protocol = 'ws://'
-  if (window.location.protocol === 'https:') {
-    protocol = 'wss://'
-  }
-  let uri = protocol + window.location.host + url
-  if (!import.meta.env.DEV) {
-    uri = protocol + window.location.host + import.meta.env.VITE_BASE_PATH + url
-  }
-  return new WebSocket(uri)
+  return new WebSocket(wsUrl(url))
 }
 export default instance

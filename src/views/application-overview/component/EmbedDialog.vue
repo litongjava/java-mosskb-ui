@@ -83,6 +83,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { copyClick } from '@/utils/clipboard'
+import { absoluteApiUrl } from '@/utils/server'
 import useStore from '@/stores'
 
 const { application } = useStore()
@@ -126,7 +127,7 @@ allow="microphone">
   source2.value = `<script
 async
 defer
-src="${window.location.origin}/api/application/embed?protocol=${window.location.protocol.replace(
+src="${absoluteApiUrl('/application/embed')}?protocol=${window.location.protocol.replace(
     ':',
     ''
   )}&host=${window.location.host}&token=${val}${urlParams2.value}">

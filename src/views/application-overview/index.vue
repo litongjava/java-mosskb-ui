@@ -209,6 +209,7 @@ import { nowDate, beforeDay } from '@/utils/time'
 import { MsgSuccess, MsgConfirm } from '@/utils/message'
 import { copyClick } from '@/utils/clipboard'
 import { isAppIcon } from '@/utils/application'
+import { serverUrl, absoluteApiUrl } from '@/utils/server'
 import useStore from '@/stores'
 import { t } from '@/locales'
 const { user, application } = useStore()
@@ -217,9 +218,10 @@ const {
   params: { id }
 } = route as any
 
-const apiUrl = window.location.origin + '/doc/chat/'
+// 分享地址里的后端部分跟随 VITE_API_BASE_URL，前后端分域部署时也要指向后端
+const apiUrl = serverUrl('/doc/chat/')
 
-const baseUrl = window.location.origin + '/api/application/'
+const baseUrl = absoluteApiUrl('/application/')
 
 const DisplaySettingDialogRef = ref()
 const XPackDisplaySettingDialogRef = ref()
