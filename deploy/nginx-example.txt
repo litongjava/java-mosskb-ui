@@ -1,0 +1,83 @@
+server {
+    listen 80;
+    listen 443 ssl http2;
+    server_name cloud.maxkb.xyz;
+
+    # 站点根目录 = 前端构建产物（dist/ui 的内容直接铺在这里，index.html 在这一层）
+    root /www/sites/cloud.maxkb.xyz/index;
+    index index.html;                     # 去掉了 index.php，这个站没有 PHP
+
+    access_log /www/sites/cloud.maxkb.xyz/log/access.log main;
+    error_log  /www/sites/cloud.maxkb.xyz/log/error.log;
+
+    # ---------- 静态前端 ----------
+    location / {
+        try_files $uri $uri/ /index.html;  # 路由是 hash 模式，深链不会打到服务端，兜底更保险
+    }
+
+    # 入口文件不缓存，否则发版后浏览器还在跑旧版本
+    location = /index.html {
+        expires -1;
+    }
+
+    # vite 产物文件名自带 hash，可以长缓存（用 expires 而不是 add_header，
+    # 因为 location 里一旦出现 add_header，会覆盖掉 server 级的 HSTS 头）
+    location ~* \.(?:js|css|png|jpe?g|gif|svg|ico|webp|woff2?|ttf|otf|eot)$ {
+        expires 30d;
+        access_log off;
+    }
+
+    # ---------- 压缩：主 chunk 6.9MB，gzip 后约 2.1MB ----------
+    gzip on;
+    gzip_min_length 1k;
+    gzip_comp_level 5;
+    gzip_vary on;
+    gzip_types text/plain text/css application/javascript application/json image/svg+xml application/wasm;
+
+    # ---------- 证书与 HTTPS ----------
+    ssl_certificate     /www/sites/cloud.maxkb.xyz/ssl/fullchain.pem;
+    ssl_certificate_key /www/sites/cloud.maxkb.xyz/ssl/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;        # 去掉了已弃用的 TLSv1 / TLSv1.1
+    ssl_ciphers ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:!aNULL:!eNULL:!EXPORT:!DSS:!DES:!RC4:!3DES:!MD5:!PSK:!KRB5:!SRP:!CAMELLIA:!SEED;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+
+    error_page 497 https://$host$request_uri;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    if ($scheme = http) {
+        return 301 https://$host$request_uri;
+    }
+
+    location ^~ /.well-known/acme-challenge {
+        allow all;
+        root /usr/share/nginx/html;
+    }
+
+    # 保留你面板里的转发头（纯静态下用不到；只有启用下面「可选反代」时才起作用）
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Host $server_name;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
+
+    # ---------- 可选：想让后端也走同源（不依赖后端 CORS）时启用 ----------
+    # 启用后构建要改成 VITE_API_BASE_URL=/api，并且 /doc /static /pages 必须一起反代，
+    # 否则文档预览、分享链接、知识库原文件会 404（这几个地址前端是按同一个变量推导的）。
+    #
+    # location ~ ^/(api|doc|static|pages)/ {
+    #     proxy_pass https://api.maxkb.xyz;          # 结尾不带 /，URI 原样透传
+    #     proxy_set_header Host api.maxkb.xyz;       # 前面还有一层 openresty，必须带正确 Host
+    #     proxy_ssl_server_name on;                  # 反代 HTTPS 上游必须开 SNI
+    #     proxy_ssl_name api.maxkb.xyz;
+    #     proxy_http_version 1.1;
+    #     proxy_set_header Connection "";
+    #     proxy_buffering off;                       # 聊天是 SSE 流式输出，必须关缓冲
+    #     proxy_read_timeout 600s;
+    #     client_max_body_size 120m;                 # 后端上限约 105MB，默认 1m 会传不了文档
+    # }
+}

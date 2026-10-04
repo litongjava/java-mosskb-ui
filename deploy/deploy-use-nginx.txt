@@ -1,0 +1,31 @@
+因为要放在根目录（不是 /ui/），构建时的 base 必须是 /：env/.env.production 写成
+
+env
+```
+VITE_BASE_PATH=/
+VITE_API_BASE_URL=https://api.maxkb.xyz/api
+```
+
+```
+cd /root/code/java-mosskb-ui
+pnpm build                     # 产出 dist/ui/
+```
+
+```
+tar -czf /tmp/ui.tgz -C dist/ui .      # 注意是 ui 目录里的内容
+scp /tmp/ui.tgz root@cloud.maxkb.xyz:/tmp/
+```
+服务器上：
+```
+mkdir -p /www/sites/cloud.maxkb.xyz/index
+tar -xzf /tmp/ui.tgz -C /www/sites/cloud.maxkb.xyz/index
+```
+
+```
+nginx -t && nginx -s reload
+```
+
+or
+```
+cp -r dist/ui /opt/1panel/apps/openresty/openresty/www/sites/cloud.maxkb.xyz/index
+```
