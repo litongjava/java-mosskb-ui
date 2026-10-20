@@ -15,7 +15,16 @@ export default defineConfig(({ mode }) => {
   proxyConf['/api'] = {
     target: ENV.VITE_PROXY_TARGET || 'http://127.0.0.1:10060',
     changeOrigin: true,
-    rewrite: (path) => path.replace(ENV.VITE_BASE_PATH, '/')
+    rewrite: (path) => path.replace(ENV.VITE_BASE_PATH, '/'),
+    configure: (proxy) => {
+      // 流式回答走 SSE，需要向上游保持长连接。开发代理默认发 Connection: close，
+      // 服务端会在写完响应头后关闭通道，导致回答分片（甚至整段回答）收不到。
+      proxy.on('proxyReq', (proxyReq, req) => {
+        if (req.url && req.url.includes('/chat_message/')) {
+          proxyReq.setHeader('connection', 'keep-alive')
+        }
+      })
+    }
   }
   proxyConf['/doc'] = {
     target: ENV.VITE_PROXY_TARGET || 'http://127.0.0.1:10060',

@@ -11,6 +11,7 @@ export default {
     embedInWebsite: '嵌入第三方',
     accessControl: '访问限制',
     displaySetting: '显示设置',
+    miniappCode: '小程序码',
     apiAccessCredentials: 'API 访问凭据',
     apiKey: 'API Key',
     refreshToken: {

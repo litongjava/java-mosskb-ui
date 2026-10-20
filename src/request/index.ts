@@ -166,6 +166,8 @@ export const get: (
  * @param params 参数
  * @param data   添加数据
  * @param loading loading
+ * @param timeout 超时时间
+ * @param options 覆盖 axios 配置，例如 silent 关闭统一错误提示与统一 code 校验
  * @returns 异步promise对象
  */
 export const post: (
@@ -173,9 +175,20 @@ export const post: (
   data?: unknown,
   params?: unknown,
   loading?: NProgress | Ref<boolean>,
-  timeout?: number
-) => Promise<Result<any> | any> = (url, data, params, loading, timeout) => {
-  return promise(request({ url: url, method: 'post', data, params, timeout }), loading)
+  timeout?: number,
+  options?: { silent?: boolean }
+) => Promise<Result<any> | any> = (url, data, params, loading, timeout, options) => {
+  return promise(
+    request({
+      url: url,
+      method: 'post',
+      data,
+      params,
+      timeout,
+      silent: options?.silent
+    } as InternalAxiosRequestConfig),
+    loading
+  )
 }
 
 /**|

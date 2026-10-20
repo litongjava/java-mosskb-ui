@@ -101,6 +101,9 @@
                 <el-button @click="openDisplaySettingDialog">
                   {{ $t('views.applicationOverview.appInfo.displaySetting') }}
                 </el-button>
+                <el-button :disabled="!accessToken?.is_active" @click="openMiniappCode">
+                  {{ $t('views.applicationOverview.appInfo.miniappCode') }}
+                </el-button>
               </div>
             </el-col>
             <el-col :span="12" class="mt-16">
@@ -195,7 +198,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import EmbedDialog from './component/EmbedDialog.vue'
 import APIKeyDialog from './component/APIKeyDialog.vue'
 import LimitDialog from './component/LimitDialog.vue'
@@ -214,6 +217,7 @@ import useStore from '@/stores'
 import { t } from '@/locales'
 const { user, application } = useStore()
 const route = useRoute()
+const router = useRouter()
 const {
   params: { id }
 } = route as any
@@ -292,6 +296,14 @@ function openDisplaySettingDialog() {
   } else {
     DisplaySettingDialogRef.value?.open(accessToken.value, detail.value)
   }
+}
+
+// 小程序码是公开访问链接的另一种分发形式，直接跳到对应页面
+function openMiniappCode() {
+  router.push({
+    name: 'AppMiniappCode',
+    params: { id, type: route.params.type }
+  })
 }
 function openEditAvatar() {
   EditAvatarDialogRef.value.open(detail.value)

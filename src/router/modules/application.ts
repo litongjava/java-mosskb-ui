@@ -48,6 +48,18 @@ const applicationRouter = {
           component: () => import('@/views/application/ApplicationSetting.vue')
         },
         {
+          path: 'miniapp-code',
+          name: 'AppMiniappCode',
+          meta: {
+            icon: 'app-miniapp',
+            title: 'views.applicationOverview.appInfo.miniappCode',
+            active: 'miniapp-code',
+            parentPath: '/application/:id/:type',
+            parentName: 'ApplicationDetail'
+          },
+          component: () => import('@/views/application/MiniappCode.vue')
+        },
+        {
           path: 'access',
           name: 'AppAccess',
           meta: {

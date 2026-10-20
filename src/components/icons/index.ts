@@ -1015,6 +1015,59 @@ export const iconMap: any = {
       ])
     }
   },
+  'app-miniapp': {
+    iconReader: () => {
+      return h('i', [
+        h(
+          'svg',
+          {
+            style: { height: '100%', width: '100%' },
+            viewBox: '0 0 1024 1024',
+            version: '1.1',
+            xmlns: 'http://www.w3.org/2000/svg'
+          },
+          [
+            // 三个定位角
+            h('rect', {
+              x: 96,
+              y: 96,
+              width: 256,
+              height: 256,
+              rx: 32,
+              fill: 'none',
+              stroke: 'currentColor',
+              'stroke-width': 72
+            }),
+            h('rect', {
+              x: 672,
+              y: 96,
+              width: 256,
+              height: 256,
+              rx: 32,
+              fill: 'none',
+              stroke: 'currentColor',
+              'stroke-width': 72
+            }),
+            h('rect', {
+              x: 96,
+              y: 672,
+              width: 256,
+              height: 256,
+              rx: 32,
+              fill: 'none',
+              stroke: 'currentColor',
+              'stroke-width': 72
+            }),
+            // 右下角的数据点
+            h('path', {
+              d: 'M672 672h96v96h-96zM800 672h128v96h-128zM672 800h96v128h-96zM800 800h128v128h-128zM448 96h96v96h-96zM448 256h96v96h-96zM448 416h96v96h-96zM96 448h96v96h-96zM256 448h96v96h-96zM448 576h96v96h-96zM576 448h96v96h-96zM96 576h96v96h-96z',
+              fill: 'currentColor'
+            })
+          ]
+        )
+      ])
+    }
+  },
   'app-minify': {
     iconReader: () => {
       return h('i', [

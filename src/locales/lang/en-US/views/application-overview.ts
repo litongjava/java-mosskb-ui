@@ -11,6 +11,7 @@ export default {
     embedInWebsite: 'Get Embed Code',
     accessControl: 'Access Control',
     displaySetting: 'Display Settings',
+    miniappCode: 'Mini Program Code',
     apiAccessCredentials: 'API Access Credentials',
     apiKey: 'API Key',
     refreshToken: {

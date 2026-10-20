@@ -8,6 +8,45 @@ import { API_BASE_URL } from '@/utils/server'
 
 const prefix = '/application'
 
+/** 微信小程序码请求参数，应用标识用字符串避免大整数精度丢失 */
+export interface MiniappCodeRequest {
+  application_id: string
+  page?: string
+  check_path?: boolean
+  env_version?: string
+  width?: number
+}
+
+/** 微信小程序码响应数据 */
+export interface MiniappCodeResult {
+  application_id: string
+  application_name?: string
+  scene: string
+  page: string
+  env_version: string
+  content_type: string
+  image_base64: string
+}
+
+/**
+ * 生成智能提示的微信小程序码。
+ * 小程序接口统一返回 { code, data, msg }，成功码是 1，因此这里用 silent 跳过前端统一的 code 校验，
+ * 由本方法自己判断成功与失败，失败原因取服务端的 msg。
+ */
+const getMiniappCode: (
+  data: MiniappCodeRequest,
+  loading?: Ref<boolean>
+) => Promise<MiniappCodeResult> = (data, loading) => {
+  return post('/miniapp/admin/qrcode', data, undefined, loading, undefined, {
+    silent: true
+  }).then((result: any) => {
+    if (result && result.code === 1 && result.data) {
+      return result.data as MiniappCodeResult
+    }
+    return Promise.reject(new Error(result?.msg || result?.message || '生成小程序码失败'))
+  })
+}
+
 /**
  * 获取全部应用
  * @param 参数
@@ -641,5 +680,6 @@ export default {
   getMcpTools,
   getSegmentPreview,
   getDocumentPreviewContent,
-  getDocumentFile
+  getDocumentFile,
+  getMiniappCode
 }
