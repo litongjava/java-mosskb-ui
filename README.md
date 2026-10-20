@@ -31,20 +31,20 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 | --- | --- |
 | `env/.env` | 所有环境共用：`VITE_APP_NAME`、`VITE_BASE_PATH`（部署路径）、`VITE_APP_PORT`、`VITE_APP_TITLE` |
 | `env/.env.development` | `npm run dev`：`VITE_API_BASE_URL=/api` 走 vite 代理，`VITE_PROXY_TARGET` 指定真实后端 |
-| `env/.env.production` | `npm run build`：`VITE_API_BASE_URL=https://api.maxkb.xyz/api` |
+| `env/.env.production` | `npm run build`：`VITE_API_BASE_URL=https://api.mosskb.cn/api` |
 | `env/.env.local`、`env/.env.*.local` | 本机覆盖，已加入 `.gitignore`，不会提交 |
 
 `VITE_API_BASE_URL` 的两种写法：
 
-- 绝对地址，前后端分开部署：`VITE_API_BASE_URL=https://api.maxkb.xyz/api`，浏览器直接请求后端，
+- 绝对地址，前后端分开部署：`VITE_API_BASE_URL=https://api.mosskb.cn/api`，浏览器直接请求后端，
   需要后端允许跨域（本项目后端已返回 `access-control-allow-origin: *`）。
-- 相对地址，前后端同源部署（例如前端就挂在 `https://api.maxkb.xyz/ui/`）：
+- 相对地址，前后端同源部署（例如前端就挂在 `https://api.mosskb.cn/ui/`）：
   `VITE_API_BASE_URL=/api`，走同源请求。
 
 文档链接、分享链接、内嵌脚本、OAuth 回调和 WebSocket 地址都由这一个变量推导，见
 `src/utils/server.ts`，切换后端不需要改代码。
 
-### 构建指向 api.maxkb.xyz 的前端
+### 构建指向 api.mosskb.cn 的前端
 
 ```powershell
 cd java-mosskb-ui
@@ -73,11 +73,11 @@ npm run build-only
 
 ### 开发时联调远端后端
 
-不打开跨域也能连 `api.maxkb.xyz`：把代理指向它即可（改 `env/.env.development`）。
+不打开跨域也能连 `api.mosskb.cn`：把代理指向它即可（改 `env/.env.development`）。
 
 ```env
 VITE_API_BASE_URL=/api
-VITE_PROXY_TARGET=https://api.maxkb.xyz
+VITE_PROXY_TARGET=https://api.mosskb.cn
 ```
 
 ## Project Setup
