@@ -47,7 +47,12 @@ router.beforeEach(
         return
       }
       if (!user.userInfo) {
-        await user.profile()
+        try {
+          await user.profile()
+        } catch {
+          next({ path: '/login' })
+          return
+        }
       }
     }
     // 判断是否有菜单权限

@@ -1,5 +1,5 @@
 <template>
-  <login-layout v-if="!loading" v-loading="loading">
+  <login-layout v-loading="loading">
     <LoginContainer :subTitle="user.themeInfo?.slogan || $t('views.system.theme.defaultSlogan')">
       <h2 class="mb-24" v-if="!showQrCodeTab">{{ loginMode || $t('views.login.title') }}</h2>
       <div v-if="!showQrCodeTab">
@@ -318,6 +318,8 @@ onBeforeMount(() => {
     } else {
       loading.value = false
     }
+  }).catch(() => {
+    loading.value = false
   })
 })
 declare const window: any
