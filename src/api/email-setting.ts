@@ -28,7 +28,7 @@ const putEmailSetting: (data: any, loading?: Ref<boolean>) => Promise<Result<any
   data,
   loading
 ) => {
-  return put(`${prefix}`, data, undefined, loading)
+  return post(`${prefix}/save`, data, undefined, loading)
 }
 
 export default {

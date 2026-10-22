@@ -1,6 +1,8 @@
 <template>
   <LayoutContainer :header="$t('views.user.title')">
     <div class="p-24">
+      <el-alert class="mb-16" :closable="false" type="info"
+        :title="user.getRole() === 'SUPER_ADMIN' ? '创建管理员即创建独立团队。各团队独立管理资源和用户。' : '创建的用户加入本团队，共享应用、知识库和函数库。'" />
       <div class="flex-between">
         <el-button type="primary" @click="createUser">{{ $t('views.user.createUser') }}</el-button>
         <el-input
@@ -22,6 +24,12 @@
         v-loading="loading"
       >
         <el-table-column prop="username" :label="$t('views.user.userForm.form.username.label')" />
+        <el-table-column label="角色 / 团队">
+          <template #default="{ row }">
+            {{ row.role === 'SUPER_ADMIN' ? '超级管理员' : row.role === 'ADMIN' ? '团队管理员' : '团队成员' }}
+            <div class="color-secondary">{{ row.tenant_id }}</div>
+          </template>
+        </el-table-column>
         <el-table-column prop="nick_name" :label="$t('views.user.userForm.form.nick_name.label')" />
         <el-table-column
           prop="email"
@@ -50,7 +58,7 @@
           <template #default="{ row }">
             <div @click.stop>
               <el-switch
-                :disabled="row.role === 'ADMIN'"
+                :disabled="row.role === 'SUPER_ADMIN' || String(row.id) === String(user.userInfo?.id)"
                 size="small"
                 v-model="row.is_active"
                 @change="changeState($event, row)"
@@ -87,7 +95,7 @@
             <span class="mr-4">
               <el-tooltip effect="dark" :content="$t('common.delete')" placement="top">
                 <el-button
-                  :disabled="row.role === 'ADMIN'"
+                  :disabled="row.role === 'SUPER_ADMIN' || String(row.id) === String(user.userInfo?.id)"
                   type="primary"
                   text
                   @click.stop="deleteUserManage(row)"

@@ -13,14 +13,14 @@ const hasPermissionChild = (permission: Role | string | Permission | ComplexPerm
     return true
   }
   if (permission instanceof Role) {
-    return role === permission.role
+    return role === permission.role || (role === 'SUPER_ADMIN' && permission.role === 'ADMIN')
   }
   if (permission instanceof Permission) {
     return permissions.includes(permission.permission)
   }
   if (permission instanceof ComplexPermission) {
     const permissionOk = permission.permissionList.some((p) => permissions.includes(p))
-    const roleOk = permission.roleList.includes(role)
+    const roleOk = (permission.roleList.includes(role) || (role === 'SUPER_ADMIN' && permission.roleList.includes('ADMIN')))
     return permission.compare === 'AND' ? permissionOk && roleOk : permissionOk || roleOk
   }
   if (typeof permission === 'string') {

@@ -1,4 +1,5 @@
 interface User {
+  tenant_id?: string
   /**
    * 用户id
    */

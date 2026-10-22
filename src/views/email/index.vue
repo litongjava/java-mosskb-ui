@@ -51,9 +51,7 @@
                 >{{ $t('views.system.email.enableTLS') }}
               </el-checkbox>
             </el-form-item>
-            <el-button @click="submit(emailFormRef, 'test')" :disabled="loading">
-              {{ $t('views.system.test') }}
-            </el-button>
+
           </el-form>
 
           <div class="text-right">

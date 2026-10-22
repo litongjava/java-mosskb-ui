@@ -335,7 +335,7 @@ function tabChangeHandle() {
 }
 
 const canEdit = (row: any) => {
-  return user.userInfo?.id === row?.user_id
+  return String(user.userInfo?.tenant_id || user.userInfo?.id) === String(row?.user_id)
 }
 
 // 别人的公开函数只读：点卡片不打开编辑抽屉，菜单里只留复制

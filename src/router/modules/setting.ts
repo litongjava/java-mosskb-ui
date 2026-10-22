@@ -5,12 +5,7 @@ const settingRouter = {
   path: '/setting',
   name: 'setting',
   meta: { icon: 'Setting', title: 'views.system.title', permission: 'SETTING:READ' },
-  redirect: () => {
-    if (hasPermission(new Role('ADMIN'), 'AND')) {
-      return '/user'
-    }
-    return '/team'
-  },
+  redirect: '/user',
   component: Layout,
   children: [
     {
@@ -26,19 +21,6 @@ const settingRouter = {
         permission: new Role('ADMIN')
       },
       component: () => import('@/views/user-manage/index.vue')
-    },
-    {
-      path: '/team',
-      name: 'team',
-      meta: {
-        icon: 'app-team',
-        iconActive: 'app-team-active',
-        title: 'views.team.title',
-        activeMenu: '/setting',
-        parentPath: '/setting',
-        parentName: 'setting'
-      },
-      component: () => import('@/views/team/index.vue')
     },
     {
       path: '/template',
