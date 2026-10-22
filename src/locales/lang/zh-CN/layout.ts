@@ -28,6 +28,6 @@ export default {
     expiringSoon: '即将到期'
   },
   copyright: '版权所有 © 2014-2025 杭州飞致云信息科技有限公司',
-  userManualUrl: 'https://maxkb.cn/docs/',
+  userManualUrl: 'https://docs.mosskb.cn/',
   forumUrl: 'https://github.com/litongjava/java-mosskb/discussions'
 }
